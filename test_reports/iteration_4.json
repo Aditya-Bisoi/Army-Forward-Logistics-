@@ -1,0 +1,36 @@
+{
+  "summary": "Comprehensive backend + frontend regression for the iteration-4 DB-driven rewrite. Rewrote /app/backend/tests/test_control_tower.py to the new contract (34 pytest tests, all passing in 4.5s). Verified new keys: dynamic recommendation.id (REC-NOR-B etc.), rf-demand-0.N model version, computed before/after stockout probabilities, 6 seeded routes, enriched locations with factors/stock_days/reorder_point, top_routes with rank+color+coords. Admin CRUD, cascade delete, 409/404/422 validation, weights sum check, model train/activate/upload/regenerate, twin reset all verified. Frontend e2e covered: login/logout/re-login, overview KPIs + forecast model note, dashboard-rec → Scenarios → run blocked → approve + reject toasts, optimizer re-ranking on slider+destination change, admin entity add/edit/delete (vehicles) with window.confirm, routes same-src/dst validation, model retrain creating rf-demand-0.4 + activating back to 0.3, risk-weights disable-when-not-100 behaviour, audit tab, guided demo bar open/exit + button label toggle, inventory table. Twin reset at end — environment left in seeded state (5 locations / 6 routes / 12 vehicles / default risk weights).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_control_tower.py",
+    "/app/test_reports/pytest/pytest_results_iteration4.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "simulation.py:67 recommendation id is derived from scenario_id prefix + focus id suffix (e.g. REC-NOR-B, REC-BLO-B). It is stable per scenario+focus but not globally unique across time — audit trail stores decision rows with this id which is fine for demo, but main agent should note it is NOT a per-decision uuid.",
+    "optimizer.py:46-55 — rank_paths enumerates ALL simple paths with simple_paths(limit=50) before scoring and only then keeps top k. Fine for the current 5-node graph but will not scale; worth flagging for future growth.",
+    "admin.py has no explicit CRUD for the 'weights' endpoint under list_entities — GET /api/admin/weights returns the raw doc without id/_id fields which is correct, but DELETE/POST on 'weights' would 404 only because weights path collides with the dynamic {entity} segment. Low risk.",
+    "forecast.py:36 — history generator seeds surge bump when demand_trend>=85 for Fuel only, so only forward-b (demand_trend=90) is boosted. This means retraining produces reproducible but slightly biased models; acceptable for the demo but worth documenting.",
+    "App.js remains a single large file (~29 lines but minified JSX) — violates the <700 line / DRY guideline for maintainability, no functional impact.",
+    "Playwright test note (not a product bug): range inputs with step=5 bound to React state need the HTMLInputElement.prototype setter workaround for `fill()` to trigger onChange. Documented in context_for_next_testing_agent."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_control_tower.py",
+    "/app/test_reports/iteration_4.json"
+  ],
+  "success_rate": {
+    "backend": "100% (34/34 pytest)",
+    "frontend": "100% (login, overview, dashboard-rec→scenario, scenario blocked run+approve+reject, optimizer re-rank on slider+destination, admin add/edit/delete vehicle, routes same-src/dst validation, admin model retrain+activate, regenerate history, risk weights disable+restore, audit, guided demo open+exit+label toggle, inventory, logout+re-login)"
+  },
+  "test_credentials": "admin@forwardlogistics.demo / ControlTower2026! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None persisted. All TEST_* entities were cleaned up during the test run; POST /api/admin/twin/reset was called at the end of both backend pytest and frontend run to guarantee seeded state (5 locations / 6 routes / 12 vehicles / default risk weights 35/25/15/25). History regenerated to 3600 synthetic rows. Note: model_versions grew during testing (rf-demand-0.4 created by retrain test); rf-demand-0.3 was re-activated as per task convention. twin/reset does NOT prune old model versions by design.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend suite at /app/backend/tests/test_control_tower.py now matches the DB-driven contract (dynamic REC id, rf-demand-0.N model, 6 routes). It runs in parallel (xdist 2 workers) in ~4.5s. test_zz_reset_twin runs last to restore seed state; because of xdist LoadScope the reset can execute mid-order on gw0, but tests on gw1 only depend on seed data for CRUD operations which already create+clean up their own fixtures, so parallel execution is safe. For React range inputs (opt-weight-* and weight-*-slider), Playwright's locator.fill() does NOT reliably fire React onChange because the input is controlled with step=5; use the HTMLInputElement.prototype setter + input/change events (see set_react_range helper in iteration log). Model training takes ~2-4s. In-memory login lockout still active (5 fails/15min) — tests use a canary email for brute-force.",
+  "rca of the issue": "No bugs found this iteration. The only real-world flake observed was Playwright `locator.fill()` not updating React-controlled range inputs. Root cause: fill() sets .value via dispatch, but React's synthetic event system reads from the prototype setter; without using Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set, React's onChange sees the stale value. Mitigation: use the setter + Input/Change events workaround (documented above). Not a product bug."
+}

@@ -1,0 +1,65 @@
+{
+  "app_name": "Indian Army Predictive Logistics & Forward Supply Chain (SIH 2026 PS26251)",
+  "context": "Dashboard & Decision-Support Platform with Predictive Forward Logistics Digital Twin",
+  "emotional_tone": "Authoritative, High-Precision Tactical, Calm Command Center, Reliable",
+  "typography": {
+    "headings": {
+      "font_family": "Chivo, 'Barlow Condensed', sans-serif",
+      "weights": ["600", "700", "900"],
+      "letter_spacing": "tracking-tight"
+    },
+    "body": {
+      "font_family": "Inter, 'IBM Plex Sans', sans-serif",
+      "weights": ["400", "500", "600"]
+    },
+    "mono": {
+      "font_family": "JetBrains Mono, monospace"
+    }
+  },
+  "colors": {
+    "archetype": "THE PERFORMANCE PRO & TACTICAL MILITARY COMMAND",
+    "primary_anchor": "#0A0A0A",
+    "olive_military": "#2D3732",
+    "accent_blaze": "#FF3B30",
+    "accent_amber": "#FF9500",
+    "accent_emerald": "#34C759",
+    "volt_blue": "#0A84FF",
+    "surface_dark": "#121413",
+    "surface_card": "#1A1D1B",
+    "border_tactical": "#2C3530"
+  },
+  "layout_strategy": {
+    "grid_mode": "High Density Dashboard & Bento Tactical Grid",
+    "spacing_scale": "p-4, p-6, p-8, gap-6"
+  },
+  "image_urls": [
+    {
+      "category": "Depot Aerial",
+      "url": "https://images.unsplash.com/photo-1669003748835-df449e92453a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwzfHxtaWxpdGFyeSUyMHN1cHBseSUyMGRlcG90JTIwd2FyZWhvdXNlJTIwYWVyaWFsfGVufDB8fHx8MTc5MTA5MDM2Nnww&ixlib=rb-4.1.0&q=85",
+      "description": "Military supply depot facility with storage structures"
+    },
+    {
+      "category": "Command Center",
+      "url": "https://images.unsplash.com/photo-1652145595413-0a79398e5888?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwzfHx0YWN0aWNhbCUyMG1hcCUyMHJhZGFyJTIwY29udHJvbCUyMHJvb218ZW58MHx8fHwxNzkxMDkwMzY2fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Tactical control room with multi-monitor command setups"
+    }
+  ],
+  "components": [
+    "Logistics Intelligence Control Tower (4-question command center overview)",
+    "Tactical Geographic Network Map (Leaflet / interactive nodes & supply routes)",
+    "Digital Twin Node & Route Details Inspector",
+    "Inventory & Consumption Engine (Ammo, Rations, Fuel, Spares)",
+    "Baseline & Scikit-Learn ML Demand Forecast (MAE/RMSE evaluation)",
+    "Transparent Weighted Risk Scoring & Shortage Prediction",
+    "Disruption & What-If Simulation Engine (Route block, weather, surge)",
+    "Route & Resupply Optimizer (Alternative depots)",
+    "Explainable Recommendations & Human Approval Workflow",
+    "Audit Log & Compliance Trail",
+    "Admin Data Management & Scenario Library",
+    "Secure Demo Authentication with Role-Aware Switcher (Planner / Commander / Admin / Skip Auth)"
+  ],
+  "accessibility_and_testing": {
+    "data_testid_convention": "kebab-case role-based testid attributes on all interactive elements",
+    "contrast": "WCAG AA compliant high contrast dark mode with tactical amber and emerald status badges"
+  }
+}

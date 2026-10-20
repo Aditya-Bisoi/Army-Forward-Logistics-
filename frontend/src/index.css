@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{box-sizing:border-box}body{margin:0;font-family:'IBM Plex Sans',sans-serif;background:#0c0f0e;color:#e8eee9}button,input{font:inherit}button{cursor:pointer}#root{min-height:100vh}
